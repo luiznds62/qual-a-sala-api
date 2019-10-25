@@ -21,6 +21,7 @@
   ],
   "author": "Luiz Henrique Naspolini",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "body-parser": "^1.15.2",
     "cors": "^2.8.0",
     "express": "4.14.0",
