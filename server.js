@@ -7,7 +7,7 @@ import config from './core/config/config.dev'
 import materias from './routes/materia.route'
 import connectToDb from './db/connect'
 
-const port = config.serverPort;
+const port = process.env.port || 3000;
 logger.stream = {
     write: function(message, encoding){
         logger.info(message);
