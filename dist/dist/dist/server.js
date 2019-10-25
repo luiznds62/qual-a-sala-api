@@ -24,9 +24,9 @@ var _config = require("./core/config/config.dev");
 
 var _config2 = _interopRequireDefault(_config);
 
-var _materia = require("./routes/materia.route");
+var _cars = require("./routes/cars.route");
 
-var _materia2 = _interopRequireDefault(_materia);
+var _cars2 = _interopRequireDefault(_cars);
 
 var _connect = require("./db/connect");
 
@@ -36,7 +36,7 @@ function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
 }
 
-var port = process.env.port || 3000;
+var port = _config2.default.serverPort;
 _appLogger2.default.stream = {
     write: function write(message, encoding) {
         _appLogger2.default.info(message);
@@ -51,7 +51,7 @@ app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use((0, _morgan2.default)("dev", { "stream": _appLogger2.default.stream }));
 
-app.use('/materia', _materia2.default);
+app.use('/cars', _cars2.default);
 
 //Index route
 app.get('/', function (req, res) {
