@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "API para dados de asalas",
   "scripts": {
-    "start": "babel-node ./server.js --exec babel-node",
+    "start": "npm run-script serve",
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
     "serve": "node dist/server.js",
     "start_babel": "babel-node ./server.js --preset=babel-preset-es2015",
