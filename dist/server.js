@@ -34,7 +34,7 @@ var _connect2 = _interopRequireDefault(_connect);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var port = process.env.port || 3000;
+var port = process.env.PORT || 3000;
 _appLogger2.default.stream = {
     write: function write(message, encoding) {
         _appLogger2.default.info(message);
