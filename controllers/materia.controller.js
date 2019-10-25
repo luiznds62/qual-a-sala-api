@@ -33,6 +33,7 @@ controller.addMateria = async (req, res) => {
     let materiaToAdd = Materia({
         nome: req.body.nome,
         professor: req.body.professor,
+        fase: req.body.fase,
         sala: req.body.sala,
         bloco: req.body.bloco,
         urlImg: req.body.urlImg

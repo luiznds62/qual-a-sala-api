@@ -40,7 +40,7 @@ var connectToDb = function () {
                         dbName = _config2.default.dbName;
                         _context.prev = 3;
                         _context.next = 6;
-                        return _mongoose2.default.connect('mongodb://' + dbHost + ':' + dbPort + '/' + dbName, { useMongoClient: true });
+                        return _mongoose2.default.connect('mongodb+srv://root:12598@financial-tyiml.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
                     case 6:
                         _appLogger2.default.info('Connected to mongo!!!');
@@ -51,7 +51,7 @@ var connectToDb = function () {
                         _context.prev = 9;
                         _context.t0 = _context['catch'](3);
 
-                        _appLogger2.default.error('Could not connect to MongoDB');
+                        _appLogger2.default.error('Could not connect to MongoDB' + _context.t0);
 
                     case 12:
                     case 'end':

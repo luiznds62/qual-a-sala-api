@@ -13,6 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MateriaSchema = _mongoose2.default.Schema({
     nome: { type: String, required: true, unique: true, index: true },
     professor: { type: String, required: true },
+    fase: { type: String, required: true },
     sala: { type: String, required: true },
     bloco: { type: String, required: true },
     urlImg: { type: String, required: true }
