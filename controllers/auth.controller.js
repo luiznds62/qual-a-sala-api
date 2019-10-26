@@ -1,0 +1,126 @@
+import User from '../models/user.model'
+import authConfig from '../config/auth.json'
+import logger from '../core/logger/app-logger'
+import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
+import bcrypt from 'bcrypt'
+
+const controller = {};
+
+function generateToken(params = {}) {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400,
+    })
+}
+
+controller.register = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        if (await User.findOne({ email })) {
+            return res.status(400).send({ sucess: false, message: 'Email já utilizado', object: [] })
+        }
+
+        const user = await User.create(req.body);
+        user.password = undefined;
+
+        return res.send({ sucess: true, message: "Usuário registro com sucesso", object: { user, token: generateToken({ id: user.id }) } })
+    } catch (err) {
+        return res.status(400).send({ sucess: false, message: "Erro ao cadastrar: " + err, object: [] });
+    }
+}
+
+controller.authenticate = async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+        res.status(400).send({ sucesso: false, mensagem: "Usuário não encontrado", objeto: '' });
+    }
+    if (!await bcrypt.compare(password, user.password)) {
+        res.status(400).send({ sucesso: false, mensagem: "Senha inválida", objeto: '' });
+    }
+    user.password = undefined;
+
+    res.send({ sucesso: true, mensagem: "Login realizado com sucesso", objeto: { user, token: generateToken({ id: user.id }) } });
+}
+
+controller.createUser = async (req, res) => {
+    const { email } = req.body;
+    try {
+        console.log(email)
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).send({ sucesso: false, mensagem: "Usuário não encontrado", objeto: '' })
+        }
+        res.send({ sucesso: true, mensagem: "Usuário buscado com sucesso", objeto: user });
+    } catch (err) {
+        res.status(400).send({ sucesso: false, mensagem: "Usuário não encontrado", objeto: '' });
+    }
+}
+
+controller.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    try {
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: [] })
+        }
+
+        const token = crypto.randomBytes(20).toString('hex');
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        await User.findByIdAndUpdate(user.id, {
+            '$set': {
+                passwordResetToken: token,
+                passwordResetExpires: now,
+            }
+        });
+
+        mailer.sendMail({
+            to: email,
+            from: 'luiznds62@gmail.com',
+            template: 'auth/forgot_password',
+            context: { token }
+        }, (err) => {
+            if (err) {
+                return res.status(400).send({ sucess: false, message: "Não foi possível enviar o email de esqueceu sua senha", object: [] })
+            }
+            return res.send();
+        });
+    } catch (err) {
+        res.status(400).send({ sucess: false, message: "Erro ao esqueceu a senha, tente novamente", object: [] })
+    }
+}
+
+controller.resetPassword = async (req, res) => {
+    const { email, token, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email })
+            .select('+passwordResetToken passwordResetExpires');
+
+        if (!user) {
+            return res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: [] })
+        }
+
+        if (token !== user.passwordResetToken) {
+            return res.status(400).send({ sucess: false, message: "Token inválido", object: [] })
+        }
+
+        const now = new Date();
+
+        if (now > user.passwordResetExpires) {
+            return res.status(400).send({ sucess: false, message: "Token expirado", object: [] })
+        }
+
+        user.password = password;
+        await user.save();
+        res.send({ sucess: true, message: "Senha resetada com sucesso", object: [] });
+    } catch (err) {
+        res.status(400).send({ sucess: false, message: "Não é possível resetar a senha", object: [] })
+    }
+}
+
+export default controller;

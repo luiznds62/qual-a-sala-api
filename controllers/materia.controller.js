@@ -7,7 +7,7 @@ controller.getAll = async (req, res) => {
     try {
         const materias = await Materia.getAll();
         logger.info('sending all materias...');
-        res.send({sucess: true,message:"",object: materias});
+        res.send({sucess: true,message:"Materias retornadas com sucesso",object: materias});
     }
     catch(err) {
         logger.error('Error in getting materias- ' + err);

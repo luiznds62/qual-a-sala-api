@@ -5,11 +5,13 @@ import logger from './core/logger/app-logger'
 import morgan from 'morgan'
 import config from './core/config/config.dev'
 import materias from './routes/materia.route'
+import userHasMateria from './routes/userHasMateria.route'
+import auth from './routes/auth.route'
 import connectToDb from './db/connect'
 
 const port = process.env.PORT || 3000;
 logger.stream = {
-    write: function(message, encoding){
+    write: function (message, encoding) {
         logger.info(message);
     }
 };
@@ -22,7 +24,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev", { "stream": logger.stream }));
 
+app.use('/auth', auth);
 app.use('/materia', materias);
+app.use('/userHasMateria', userHasMateria);
 
 //Index route
 app.get('/', (req, res) => {
