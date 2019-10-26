@@ -7,15 +7,46 @@ const controller = {};
 
 controller.addMateriasToUser = async (req, res) => {
     try {
-        const user = await User.findById({ _id: req.body.userId });
+        const user = await User.findById({ _id: req.body.user });
         const materias = req.body.materias
-        logger.info('sending all materias to users...');
+        logger.info('adding all materias to users...');
         const materiaUserCreated = UserHasMateria.create({ user: user, materias: materias })
 
-        return res.send({ sucess: true, message: "Materias alocadas ao usuário com sucesso", object: materiaUserCreated });
-    } catch (err) {
-        return res.send({ sucess: false, message: "Ocorreu um erro ao salvar", object: [] })
+        res.send({ sucess: true, message: "Materias alocadas ao usuário com sucesso", object: materiaUserCreated });
+    } catch (error) {
+        logger.info('error in adding all materias to users...');
+        res.send({ sucess: false, message: "Ocorreu um erro ao salvar: " + error, object: [] })
     }
 }
+
+controller.addOneMateriaToUser = async (req, res) => {
+    try {
+        let userHasMaterias = await UserHasMateria.findOne({ user: req.body.user })
+        userHasMaterias.materias.push(req.body.materia);
+        console.log(userHasMaterias)
+        const updatedUserHasMateria = await UserHasMateria.update(userHasMaterias)
+
+        res.send({ sucess: true, message: "Materia atualizada ao usuário com sucesso", object: updatedUserHasMateria });
+    } catch (error) {
+        logger.info('error in adding all materias to users...');
+        res.send({ sucess: false, message: "Ocorreu um erro ao atualizar: " + error, object: [] })
+    }
+}
+
+controller.getAllMateriasOfUser = async (req, res) => {
+    try {
+        const userHasMaterias = await UserHasMateria.find({ user: req.body.user });
+        logger.info('sending all materias to user...');
+        if (userHasMaterias.length === 0) {
+            res.send({ sucess: false, message: "Nenhuma matéria encontrada para o usuário", object: [] })
+        }
+
+        res.send({ sucess: true, message: "Matérias encontradas com sucesso", object: userHasMaterias })
+    } catch (error) {
+        logger.info('error sending all materias to users...');
+        res.send({ sucess: false, message: "Falha ao buscar: " + error, object: [] })
+    }
+}
+
 
 export default controller

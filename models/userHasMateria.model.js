@@ -5,10 +5,11 @@ const UserHasMateriaSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true
+        require: true,
+        unique: true
     },
     materias: {
-        type: Map,
+        type: Object,
         of: String
     },
     createdAt: {

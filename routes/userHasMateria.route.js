@@ -7,12 +7,16 @@ const router = express.Router()
 router.use(authMiddleware);
 
 router.get('/', (req, res) => {
-
+    userHasMaterialController.getAllMateriasOfUser(req, res);
 });
 
 router.put('/', (req, res) => {
 
-})
+});
+
+router.patch('/', (req, res) => {
+    userHasMaterialController.addOneMateriaToUser(req, res);
+});
 
 router.post('/', (req, res) => {
     userHasMaterialController.addMateriasToUser(req, res);
