@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-
+  
 const UserHasMateriaSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,

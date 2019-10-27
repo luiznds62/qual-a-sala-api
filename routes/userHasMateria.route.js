@@ -1,8 +1,8 @@
-import express from 'express'
-import userHasMaterialController from '../controllers/userHasMateria.controller'
-import authMiddleware from '../middlewares/AuthMiddleware'
+import express from 'express';
+import userHasMaterialController from '../controllers/userHasMateria.controller';
+import authMiddleware from '../middlewares/AuthMiddleware';
 
-const router = express.Router()
+const router = express.Router();
 
 router.use(authMiddleware);
 
@@ -22,8 +22,8 @@ router.post('/', (req, res) => {
     userHasMaterialController.addMateriasToUser(req, res);
 });
 
-router.delete('/', (req, res) => {
-
+router.delete('/materia', (req, res) => {
+    userHasMaterialController.removeMateriaFromUser(req, res);
 });
 
 export default router;

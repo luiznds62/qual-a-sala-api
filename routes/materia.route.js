@@ -10,6 +10,14 @@ router.get('/', (req, res) => {
     materiaController.getAll(req, res);
 });
 
+router.get('/curso', (req, res) => {
+    materiaController.getMateriaFromCurso(req, res);
+});
+
+router.get('/curso/fase', (req, res) => {
+    materiaController.getMateriaFromCursoEFase(req, res);
+});
+
 router.put('/', (req, res) => {
     materiaController.updateMateria(req, res);
 })

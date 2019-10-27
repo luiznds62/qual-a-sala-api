@@ -35,7 +35,7 @@ controller.addOneMateriaToUser = async (req, res) => {
 
 controller.getAllMateriasOfUser = async (req, res) => {
     try {
-        const userHasMaterias = await UserHasMateria.find({ user: req.body.user });
+        const userHasMaterias = await UserHasMateria.find({ user: req.body.user }).populate('user');
         logger.info('sending all materias to user...');
         if (userHasMaterias.length === 0) {
             res.send({ sucess: false, message: "Nenhuma matéria encontrada para o usuário", object: [] })
@@ -45,6 +45,21 @@ controller.getAllMateriasOfUser = async (req, res) => {
     } catch (error) {
         logger.info('error sending all materias to users...');
         res.send({ sucess: false, message: "Falha ao buscar: " + error, object: [] })
+    }
+}
+
+controller.removeMateriaFromUser = async (req, res) => {
+    try {
+        let userHasMaterias = await UserHasMateria.findOne({ user: req.body.user });
+        for (var i = 0; i < userHasMaterias.materias.length; i++) {
+            if (userHasMaterias.materias[i] === req.body.materia) {
+                userHasMaterias.materias.splice(i, 1)
+            }
+        }
+        const removedMateriaFromUser = await UserHasMateria.update(userHasMaterias);
+        res.send({ sucess: true, message: "Matéria removida com sucesso do usuário", object: removedMateriaFromUser })
+    } catch (error) {
+        res.send({ sucess: false, message: "Ocorreu um erro ao remover: " + error, object: [] });
     }
 }
 
