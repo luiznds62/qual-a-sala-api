@@ -7,6 +7,13 @@ import bcrypt from 'bcrypt'
 
 const controller = {};
 
+function validateEmail(mail) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+        return (true)
+    }
+    return (false)
+}
+
 function generateToken(params = {}) {
     return jwt.sign(params, authConfig.secret, {
         expiresIn: 86400,
@@ -21,10 +28,14 @@ controller.register = async (req, res) => {
             return res.status(400).send({ sucess: false, message: 'Email já utilizado', object: [] })
         }
 
+        if (!validateEmail(email)) {
+            return res.status(400).send({ sucess: false, message: 'Email inválido', object: [] })
+        }
+
         const user = await User.create(req.body);
         user.password = undefined;
 
-        return res.send({ sucess: true, message: "Usuário registro com sucesso", object: { user, token: generateToken({ id: user.id }) } })
+        return res.send({ sucess: true, message: "Usuário registrado com sucesso", object: { user, token: generateToken({ id: user.id }) } })
     } catch (err) {
         return res.status(400).send({ sucess: false, message: "Erro ao cadastrar: " + err, object: [] });
     }
@@ -35,14 +46,14 @@ controller.authenticate = async (req, res) => {
 
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-        res.status(400).send({ sucesso: false, mensagem: "Usuário não encontrado", objeto: '' });
+        res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: '' });
     }
     if (!await bcrypt.compare(password, user.password)) {
-        res.status(400).send({ sucesso: false, mensagem: "Senha inválida", objeto: '' });
+        res.status(400).send({ sucess: false, message: "Senha inválida", object: '' });
     }
     user.password = undefined;
 
-    res.send({ sucesso: true, mensagem: "Login realizado com sucesso", objeto: { user, token: generateToken({ id: user.id }) } });
+    res.send({ sucess: true, message: "Login realizado com sucesso", object: { user, token: generateToken({ id: user.id }) } });
 }
 
 controller.createUser = async (req, res) => {
@@ -51,11 +62,11 @@ controller.createUser = async (req, res) => {
         console.log(email)
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).send({ sucesso: false, mensagem: "Usuário não encontrado", objeto: '' })
+            return res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: '' })
         }
-        res.send({ sucesso: true, mensagem: "Usuário buscado com sucesso", objeto: user });
+        res.send({ sucess: true, message: "Usuário buscado com sucesso", object: user });
     } catch (err) {
-        res.status(400).send({ sucesso: false, mensagem: "Usuário não encontrado", objeto: '' });
+        res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: '' });
     }
 }
 
