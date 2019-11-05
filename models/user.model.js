@@ -17,6 +17,12 @@ const UserSchema = mongoose.Schema({
         required: true,
         select: false,
     },
+    fase: {
+        type: Number
+    },
+    curso: {
+        type: String
+    },
     passwordResetToken: {
         type: String,
         select: false

@@ -15,6 +15,10 @@ router.post('/user', (req, res) => {
     authController.createUser(req, res);
 });
 
+router.patch('/user/cursofase', (req, res) => {
+    authController.addFaseCursoToUser(req, res);
+});
+
 router.post('/forgot_password', (req,res) => {
     authController.forgotPassword(req, res);
 });

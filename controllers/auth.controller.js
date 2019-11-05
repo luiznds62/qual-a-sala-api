@@ -59,7 +59,6 @@ controller.authenticate = async (req, res) => {
 controller.createUser = async (req, res) => {
     const { email } = req.body;
     try {
-        console.log(email)
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: '' })
@@ -69,6 +68,26 @@ controller.createUser = async (req, res) => {
         res.status(400).send({ sucess: false, message: "Usuário não encontrado", object: '' });
     }
 }
+
+controller.addFaseCursoToUser = async (req, res) => {
+    const email = req.body.email
+    try {
+        let userToUpdate = await User.findOne({ email });
+        if (!userToUpdate) {
+            res.send({ sucess: false, message: "Usuário não encontrado", object: [] })
+        }
+        userToUpdate.fase = req.body.fase
+        userToUpdate.curso = req.body.curso
+        const userUpdated = await User.updateOne({ _id: userToUpdate._id }, { 
+            curso: req.body.curso, 
+            fase: req.body.fase
+        });
+        res.send({ sucess: true, message: "Dados atualizados com sucesso", object: userUpdated })
+    } catch (error) {
+        res.send({ sucess: false, message: "Ocorreu um erro: " + error, object: [] })
+    }
+}
+
 
 controller.forgotPassword = async (req, res) => {
     const { email } = req.body;
