@@ -15,6 +15,10 @@ router.post('/user', (req, res) => {
     authController.createUser(req, res);
 });
 
+router.post('/user/id', (req, res) => {
+    authController.getUserById(req, res);
+});
+
 router.patch('/user/cursofase', (req, res) => {
     authController.addFaseCursoToUser(req, res);
 });

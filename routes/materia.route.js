@@ -10,6 +10,10 @@ router.get('/', (req, res) => {
     materiaController.getAll(req, res);
 });
 
+router.post('/id', (req, res) => {
+    materiaController.getById(req, res);
+});
+
 router.get('/curso', (req, res) => {
     materiaController.getMateriaFromCurso(req, res);
 });

@@ -78,8 +78,8 @@ controller.addFaseCursoToUser = async (req, res) => {
         }
         userToUpdate.fase = req.body.fase
         userToUpdate.curso = req.body.curso
-        const userUpdated = await User.updateOne({ _id: userToUpdate._id }, { 
-            curso: req.body.curso, 
+        const userUpdated = await User.updateOne({ _id: userToUpdate._id }, {
+            curso: req.body.curso,
             fase: req.body.fase
         });
         res.send({ sucess: true, message: "Dados atualizados com sucesso", object: userUpdated })
@@ -88,6 +88,18 @@ controller.addFaseCursoToUser = async (req, res) => {
     }
 }
 
+controller.getUserById = async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.body.id })
+        if (!user) {
+            res.send({ sucess: false, message: "Nenhum usuário encontrado", object: [] })
+        }
+
+        res.send({ sucess: true, message: "Usuário encontrado com sucesso", object: user })
+    } catch (error) {
+        res.send({ sucess: false, message: "Ocorreu um erro", object: [] })
+    }
+}
 
 controller.forgotPassword = async (req, res) => {
     const { email } = req.body;

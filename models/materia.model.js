@@ -7,6 +7,7 @@ const MateriaSchema = mongoose.Schema({
     fase: { type: String, required: true },
     sala: { type: String, required: true },
     bloco: { type: String, required: true },
+    dia: {type: String,required: true},
     urlImg: { type: String, required: true }
 }, { collection: 'Materia' });
 

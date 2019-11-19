@@ -45,6 +45,18 @@ controller.getAll = async (req, res) => {
     }
 }
 
+controller.getById = async (req, res) => {
+    try {
+        const materias = await Materia.findOne({_id: req.body.id});
+        logger.info('sending materias...');
+        res.send({ sucess: true, message: "Materia retornada com sucesso", object: materias });
+    }
+    catch (err) {
+        logger.error('Error in getting materias- ' + err);
+        res.send({ sucess: false, message: "Erro ao buscar: " + err, object: [] });
+    }
+}
+
 controller.getMateriaFromCursoEFase = async (req, res) => {
     try {
         const materias = await Materia.getAll();
@@ -127,6 +139,7 @@ controller.addMateria = async (req, res) => {
         fase: req.body.fase,
         sala: req.body.sala,
         bloco: req.body.bloco,
+        dia: req.body.dia,
         urlImg: req.body.urlImg
     });
     try {

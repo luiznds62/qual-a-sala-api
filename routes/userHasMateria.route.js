@@ -6,8 +6,12 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get('/', (req, res) => {
+router.post('/user', (req, res) => {
     userHasMaterialController.getAllMateriasOfUser(req, res);
+});
+
+router.post('/dia', (req, res) => {
+    userHasMaterialController.getMateriaFromDayFromUser(req, res);
 });
 
 router.put('/', (req, res) => {

@@ -23,6 +23,10 @@ const UserSchema = mongoose.Schema({
     curso: {
         type: String
     },
+    receiveNotifications: {
+        type: Boolean,
+        required: true
+    },
     passwordResetToken: {
         type: String,
         select: false
