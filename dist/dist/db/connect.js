@@ -24,7 +24,9 @@ var _config = require('../core/config/config.dev');
 
 var _config2 = _interopRequireDefault(_config);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
 
 _mongoose2.default.Promise = global.Promise;
 
