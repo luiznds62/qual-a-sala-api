@@ -28,6 +28,18 @@ var _materia = require("./routes/materia.route");
 
 var _materia2 = _interopRequireDefault(_materia);
 
+var _userHasMateria = require("./routes/userHasMateria.route");
+
+var _userHasMateria2 = _interopRequireDefault(_userHasMateria);
+
+var _auth = require("./routes/auth.route");
+
+var _auth2 = _interopRequireDefault(_auth);
+
+var _curso = require("./routes/curso.route");
+
+var _curso2 = _interopRequireDefault(_curso);
+
 var _connect = require("./db/connect");
 
 var _connect2 = _interopRequireDefault(_connect);
@@ -49,7 +61,10 @@ app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use((0, _morgan2.default)("dev", { "stream": _appLogger2.default.stream }));
 
+app.use('/auth', _auth2.default);
 app.use('/materia', _materia2.default);
+app.use('/userHasMateria', _userHasMateria2.default);
+app.use('/curso', _curso2.default);
 
 //Index route
 app.get('/', function (req, res) {

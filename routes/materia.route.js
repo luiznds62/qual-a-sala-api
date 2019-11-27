@@ -14,7 +14,7 @@ router.post('/id', (req, res) => {
     materiaController.getById(req, res);
 });
 
-router.get('/curso', (req, res) => {
+router.post('/curso', (req, res) => {
     materiaController.getMateriaFromCurso(req, res);
 });
 

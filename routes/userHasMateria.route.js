@@ -18,7 +18,7 @@ router.put('/', (req, res) => {
 
 });
 
-router.patch('/', (req, res) => {
+router.post('/single', (req, res) => {
     userHasMaterialController.addOneMateriaToUser(req, res);
 });
 

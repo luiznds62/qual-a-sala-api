@@ -40,7 +40,7 @@ var connectToDb = function () {
                         dbName = _config2.default.dbName;
                         _context.prev = 3;
                         _context.next = 6;
-                        return _mongoose2.default.connect('mongodb+srv://root:12598@financial-tyiml.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+                        return _mongoose2.default.connect('mongodb://localhost:27017/qualasalaapi', { useNewUrlParser: true });
 
                     case 6:
                         _appLogger2.default.info('Connected to mongo!!!');
